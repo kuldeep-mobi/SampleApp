@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+option java_package = "com.mobikasa.logisticapp";
+option java_multiple_files = true;
+
+message SettingsProto {
+  int32 example_counter = 1;
+  string name = 2;
+  message Profile{
+    string firstName = 3;
+    string lastName = 4;
+    int32 rollNumber = 5;
+  }
+  Profile profile = 6;
+}

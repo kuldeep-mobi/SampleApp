@@ -1,0 +1,82 @@
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+    id "com.google.protobuf" version "0.8.12"
+}
+def credentialFile = rootProject.file("credentials.properties")
+def credentialProperty = new Properties()
+credentialProperty.load(new FileInputStream(credentialFile))
+
+android {
+    compileSdkVersion 30
+    buildToolsVersion "30.0.1"
+    defaultConfig {
+        applicationId "com.mobikasa.logisticapp"
+        minSdkVersion 24
+        targetSdkVersion 30
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField("String", "NEWS_API_KEY", credentialProperty['NEWS_API_KEY'])
+        buildConfigField("String", "BASE_URL", credentialProperty['BASE_URL'])
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    buildFeatures {
+        viewBinding true
+    }
+    protobuf {
+        protoc {
+            artifact = "com.google.protobuf:protoc:3.10.0"
+        }
+        generateProtoTasks {
+            all().each { task ->
+                task.builtins {
+                    java {
+                        option 'lite'
+                    }
+                }
+            }
+        }
+    }
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation "androidx.core:core-ktx:$rootProject.core_ktx"
+    implementation "androidx.appcompat:appcompat:$rootProject.app_component_version"
+    implementation "com.google.android.material:material:$rootProject.material_version"
+    implementation "androidx.constraintlayout:constraintlayout:$rootProject.constraint_layout"
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    testImplementation 'junit:junit:4.13.1'
+    androidTestImplementation "androidx.test.ext:junit:$rootProject.junit_version"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$rootProject.expresso_version"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$rootProject.coroutine_version"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$rootProject.lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$rootProject.lifecycle_version"
+    implementation "androidx.navigation:navigation-runtime-ktx:$rootProject.navigation_version"
+    implementation "androidx.navigation:navigation-fragment-ktx:$rootProject.navigation_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$rootProject.navigation_version"
+    implementation "androidx.fragment:fragment-ktx:$rootProject.ktx_version"
+    implementation "com.squareup.retrofit2:retrofit:$rootProject.retrofit_version"
+    implementation "com.squareup.retrofit2:converter-gson:$rootProject.retrofit_version"
+    implementation "com.journeyapps:zxing-android-embedded:4.1.0"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.2.0"
+    implementation "androidx.lifecycle:lifecycle-common-java8:2.2.0"
+    implementation "androidx.datastore:datastore:1.0.0-alpha07"
+    implementation "androidx.datastore:datastore-preferences:1.0.0-alpha07"
+    implementation "com.google.protobuf:protobuf-javalite:3.10.0"
+}
